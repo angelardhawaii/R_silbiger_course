@@ -37,3 +37,5 @@ ggplot (data = penguins,
   geom_point() +
   facet_wrap(species~sex) + #make 2 columns 
   scale_color_viridis_d()
+
+#will be doing stuff soon
