@@ -38,4 +38,16 @@ ggplot (data = penguins,
   facet_wrap(species~sex) + #make 2 columns 
   scale_color_viridis_d()
 
-#will be doing stuff soon
+#now make your own plot
+ggplot (data = penguins, mapping = aes(x = species, 
+                                       y = flipper_length_mm)) +
+  geom_boxplot() +
+  geom_jitter(alpha = 0.5, size = 2, aes(color = sex)) +
+  scale_color_grey() +
+  labs(x = "Species", y = "Flipper length (mm)") +
+  theme_bw() +
+  theme(axis.title = element_text(size = 12), 
+        panel.grid.major.x = element_blank(), 
+        legend.position = "right")
+
+  
