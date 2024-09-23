@@ -53,4 +53,38 @@ male_pen_plot <- male_log_body %>% #assign a name to the plot that is different 
 ggsave(filename = "images/male_pen_logbodymass.jpg", plot = male_pen_plot,
        height = 6, width = 8)
 #include both parts 1 and 2 in script and push to github in the appropriate folders
-            
+
+#take 2 this time filter OUT males and work with females
+fe_log_body <- penguins %>%
+  filter(sex != "male") %>% #get FEmales only
+  mutate(log_body_mass = log(body_mass_g)) %>% #make a new column based on the log of body mass
+  select(species, island, sex, log_body_mass) #new dataframe will have only these variables per the previous steps
+
+#I want to view the mean on the plot. This gets a mean of log_body_mass
+mean_log_body <- mean(fe_log_body$log_body_mass)
+
+#make a plot to display the data
+fe_pen_plot <- fe_log_body %>% #assign a name to the plot that is different from the assigned dataframe
+  ggplot(mapping = aes(x =  species, y = log_body_mass, color = species)) + #set overall aesthetics
+  geom_boxplot() +
+  geom_jitter(alpha = 0.5, size = 3) + #visualize all datapoints
+  facet_wrap("island") + #make separate strips based on island variable
+  labs(title = "Female Penguins by Species", 
+       subtitle = "Distribution by Island",
+       x = "Species",
+       y = "Log of body mass (g)") +
+  scale_color_manual(values = c("#660099", "#9900CC", "#CC99FF" )) +
+  geom_hline(yintercept = mean_log_body, color = "red", linetype = "solid", size = 0.25) + #mean line on plot
+  theme_bw(base_family = "avenir") + #applies white background and black lines + my favorite font
+  theme(axis.title = element_text(size = 12), #define font sizes
+        plot.title = element_text(size = 16, face = "bold"), #make title larger and bold
+        panel.grid.major.x = element_blank(), #remove the x-axis lines on plot
+        strip.text = element_text(size = 12), #sets font size for the Island names
+        legend.position = "none") #remove the legend because unnecessary
+fe_pen_plot
+
+ggsave(filename = "images/male_pen_logbodymass.jpg", plot = male_pen_plot,
+       height = 6, width = 8)
+
+ggsave(filename = "images/female_pen_logbodymass.jpg", plot = fe_pen_plot,
+       height = 6, width = 8)           
